@@ -2,57 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Produtividade Task Manager Design System - Colors in HSL */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Base colors */
+    --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
-
+    
+    /* Primary - Productivity Blue */
+    --primary: 210 100% 65%;
+    --primary-light: 210 100% 75%;
+    --primary-dark: 210 100% 55%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary - Success Green */
+    --secondary: 145 60% 55%;
+    --secondary-light: 145 60% 65%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Neutral system */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    /* Task states */
+    --task-pending: 210 20% 95%;
+    --task-pending-border: 210 20% 85%;
+    --task-active: 45 100% 96%;
+    --task-active-border: 45 100% 70%;
+    --task-completed: 145 40% 95%;
+    --task-completed-border: 145 40% 75%;
+    
+    /* Status colors */
+    --warning: 45 100% 60%;
+    --warning-foreground: 0 0% 100%;
+    --success: 145 60% 55%;
+    --success-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* UI elements */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --ring: 210 100% 65%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 65%), hsl(210 100% 75%));
+    --gradient-success: linear-gradient(135deg, hsl(145 60% 55%), hsl(145 60% 65%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    
+    /* Shadows */
+    --shadow-card: 0 4px 6px -1px hsl(210 100% 65% / 0.1);
+    --shadow-active: 0 8px 25px -5px hsl(45 100% 60% / 0.3);
+    --shadow-completed: 0 8px 25px -5px hsl(145 60% 55% / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    
+    /* Additional UI */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 47.4% 11.2%;
   }
 
   .dark {
@@ -100,6 +115,106 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
+}
+
+@layer components {
+  /* Task Animation Classes */
+  .task-pending {
+    @apply bg-task-pending border-task-pending-border;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-smooth);
+  }
+  
+  .task-active {
+    @apply bg-task-active border-task-active-border;
+    box-shadow: var(--shadow-active);
+    animation: pulse-active 2s infinite;
+  }
+  
+  .task-completed {
+    @apply bg-task-completed border-task-completed-border;
+    box-shadow: var(--shadow-completed);
+    transition: var(--transition-spring);
+  }
+  
+  .task-completed-animate {
+    animation: complete-task 0.6s ease-out;
+  }
+  
+  /* Button Variants */
+  .btn-primary {
+    background: var(--gradient-primary);
+    transition: var(--transition-smooth);
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-active);
+  }
+  
+  .btn-success {
+    background: var(--gradient-success);
+    transition: var(--transition-smooth);
+  }
+  
+  .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-completed);
+  }
+  
+  /* Timer Display */
+  .timer-display {
+    font-feature-settings: 'tnum';
+    letter-spacing: 0.05em;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-spring {
+    transition: var(--transition-spring);
+  }
+}
+
+/* Keyframe Animations */
+@keyframes pulse-active {
+  0%, 100% {
+    border-color: hsl(var(--task-active-border));
+  }
+  50% {
+    border-color: hsl(var(--warning));
+  }
+}
+
+@keyframes complete-task {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    background: hsl(var(--task-completed));
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
 }
