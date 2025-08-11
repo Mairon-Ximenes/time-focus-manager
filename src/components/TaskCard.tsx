@@ -140,7 +140,7 @@ export function TaskCard({
           {showTimer && (
             <div className={cn(
               'flex items-center gap-2 px-3 py-1 rounded-full text-sm font-mono timer-display',
-              isActive && 'bg-warning/50 text-warning-foreground',
+              isActive && 'bg-warning/80 text-warning-foreground',
               isCompleted && 'bg-success/30 text-success-foreground',
               !isActive && !isCompleted && 'bg-muted'
             )}>
