@@ -18,7 +18,7 @@ export function ViewModeSelector({ currentMode, onModeChange, className }: ViewM
   ];
 
   return (
-    <div className={cn('flex bg-muted rounded-lg p-1', className)}>
+    <div className={cn('flex bg-muted rounded-lg p-1', className)} role="tablist" aria-label="Modos de visualização">
       {modes.map(({ value, label, icon: Icon }) => (
         <Button
           key={value}
@@ -26,12 +26,15 @@ export function ViewModeSelector({ currentMode, onModeChange, className }: ViewM
           variant={currentMode === value ? 'default' : 'ghost'}
           size="sm"
           className={cn(
-            'flex-1 text-sm transition-all duration-200',
+            'flex-1 text-xs sm:text-sm transition-all duration-200 min-w-0',
             currentMode === value && 'btn-primary text-primary-foreground shadow-sm'
           )}
+          role="tab"
+          aria-selected={currentMode === value}
+          aria-label={`Visualização por ${label.toLowerCase()}`}
         >
-          <Icon className="w-4 h-4 mr-1" />
-          {label}
+          <Icon className="w-3 h-3 sm:w-4 sm:h-4 mr-1 shrink-0" aria-hidden="true" />
+          <span className="truncate">{label}</span>
         </Button>
       ))}
     </div>
