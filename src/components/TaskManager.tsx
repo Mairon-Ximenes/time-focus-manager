@@ -9,7 +9,6 @@ import { MonthView } from '@/components/views/MonthView';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Clock, CheckCircle2, AlertCircle } from 'lucide-react';
-import { errorLogger } from '@/utils/errorLogger';
 
 export function TaskManager() {
   const [viewMode, setViewMode] = useState<ViewMode>('day');
@@ -42,22 +41,16 @@ export function TaskManager() {
     try {
       createTask({ title, description, date });
       toast({
-        title: "✅ Tarefa Criada",
+        title: "Tarefa Criada",
         description: `"${title}" foi adicionada com sucesso.`,
         duration: 3000,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao criar tarefa";
-      errorLogger.logError({
-        message: `Failed to create task: ${errorMessage}`,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
       toast({
-        title: "❌ Erro ao Criar",
-        description: errorMessage,
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Erro ao criar tarefa",
         variant: "destructive",
-        duration: 4000,
+        duration: 3000,
       });
     }
   };
@@ -66,22 +59,16 @@ export function TaskManager() {
     try {
       updateTask(taskId, updates);
       toast({
-        title: "💾 Alterações Salvas",
-        description: "A tarefa foi atualizada com sucesso.",
+        title: "Tarefa Atualizada",
+        description: "As alterações foram salvas.",
         duration: 2000,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao atualizar tarefa";
-      errorLogger.logError({
-        message: `Failed to update task ${taskId}: ${errorMessage}`,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
       toast({
-        title: "❌ Erro ao Salvar",
-        description: errorMessage,
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Erro ao atualizar tarefa",
         variant: "destructive",
-        duration: 4000,
+        duration: 3000,
       });
     }
   };
@@ -90,22 +77,16 @@ export function TaskManager() {
     try {
       deleteTask(taskId);
       toast({
-        title: "🗑️ Tarefa Removida",
-        description: "A tarefa foi excluída com sucesso.",
+        title: "Tarefa Deletada",
+        description: "A tarefa foi removida com sucesso.",
         duration: 2000,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao deletar tarefa";
-      errorLogger.logError({
-        message: `Failed to delete task ${taskId}: ${errorMessage}`,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
       toast({
-        title: "❌ Erro ao Excluir",
-        description: errorMessage,
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Erro ao deletar tarefa",
         variant: "destructive",
-        duration: 4000,
+        duration: 3000,
       });
     }
   };
@@ -115,47 +96,34 @@ export function TaskManager() {
       startTask(taskId);
       const task = tasks.find(t => t.id === taskId);
       toast({
-        title: "▶️ Sessão Iniciada",
-        description: `Foco ativado para "${task?.title}". Boa produtividade!`,
+        title: "Tarefa Iniciada",
+        description: `Timer iniciado para "${task?.title}".`,
         duration: 3000,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao iniciar tarefa";
-      errorLogger.logError({
-        message: `Failed to start task ${taskId}: ${errorMessage}`,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
       toast({
-        title: "❌ Erro ao Iniciar",
-        description: errorMessage,
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Erro ao iniciar tarefa",
         variant: "destructive",
-        duration: 4000,
+        duration: 3000,
       });
     }
   };
 
   const handleToggleTimer = async () => {
     try {
-      const wasRunning = timerState.isRunning;
       toggleTimer();
       toast({
-        title: wasRunning ? "⏸️ Timer Pausado" : "▶️ Timer Retomado",
-        description: wasRunning ? "Sessão pausada. Descanse um pouco!" : "Voltando ao foco. Vamos lá!",
+        title: timerState.isRunning ? "Timer Pausado" : "Timer Retomado",
+        description: timerState.isRunning ? "O cronômetro foi pausado." : "O cronômetro foi retomado.",
         duration: 2000,
       });
     } catch (error) {
-      const errorMessage = "Erro ao controlar o timer";
-      errorLogger.logError({
-        message: `Failed to toggle timer: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
       toast({
-        title: "❌ Erro no Timer",
-        description: errorMessage,
+        title: "Erro",
+        description: "Erro ao controlar o timer",
         variant: "destructive",
-        duration: 4000,
+        duration: 3000,
       });
     }
   };
@@ -165,22 +133,16 @@ export function TaskManager() {
       const task = tasks.find(t => t.id === taskId);
       completeTask(taskId);
       toast({
-        title: "🎉 Tarefa Concluída!",
-        description: `Parabéns! "${task?.title}" foi finalizada. Excellent trabalho!`,
+        title: "Tarefa Concluída! 🎉",
+        description: `"${task?.title}" foi finalizada com sucesso.`,
         duration: 4000,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao finalizar tarefa";
-      errorLogger.logError({
-        message: `Failed to complete task ${taskId}: ${errorMessage}`,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
       toast({
-        title: "❌ Erro ao Finalizar",
-        description: errorMessage,
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Erro ao finalizar tarefa",
         variant: "destructive",
-        duration: 4000,
+        duration: 3000,
       });
     }
   };
