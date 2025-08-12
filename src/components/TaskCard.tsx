@@ -55,6 +55,7 @@ export function TaskCard({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(task.description || '');
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { totalTime, formatTime } = useTimer(timerState);
 
   const isActive = task.id === timerState.activeTaskId;
@@ -66,13 +67,18 @@ export function TaskCard({
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (editTitle.trim()) {
-      onUpdate(task.id, {
-        title: editTitle.trim(),
-        description: editDescription.trim() || undefined,
-      });
-      setIsEditing(false);
+      setIsLoading(true);
+      try {
+        await onUpdate(task.id, {
+          title: editTitle.trim(),
+          description: editDescription.trim() || undefined,
+        });
+        setIsEditing(false);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -82,9 +88,14 @@ export function TaskCard({
     setIsEditing(false);
   };
 
-  const handleDelete = () => {
-    onDelete(task.id);
-    setShowDeleteDialog(false);
+  const handleDelete = async () => {
+    setIsLoading(true);
+    try {
+      await onDelete(task.id);
+      setShowDeleteDialog(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getCardClassName = () => {
@@ -183,8 +194,8 @@ export function TaskCard({
               <Button
                 onClick={handleSave}
                 size="sm"
-                className="btn-success text-success-foreground"
-                disabled={!editTitle.trim()}
+                className={`btn-success text-success-foreground ${isLoading ? 'is-loading' : ''}`}
+                disabled={!editTitle.trim() || isLoading}
                 aria-label="Salvar alterações na tarefa"
               >
                 <Save className="w-4 h-4" />
@@ -207,11 +218,12 @@ export function TaskCard({
                 <Button
                   onClick={() => onStart(task.id)}
                   size="sm"
-                  className="btn-primary text-primary-foreground"
+                  className={`btn-primary text-primary-foreground ${isLoading ? 'is-loading' : ''}`}
                   aria-label={`Iniciar timer para a tarefa ${task.title}`}
+                  disabled={isLoading}
                 >
                   <Play className="w-4 h-4 mr-1" aria-hidden="true" />
-                  Iniciar
+                  Iniciar Foco
                 </Button>
               )}
 
@@ -221,8 +233,9 @@ export function TaskCard({
                     onClick={onToggleTimer}
                     size="sm"
                     variant="outline"
-                    className="border-warning text-warning hover:bg-warning/10"
+                    className={`border-warning text-warning hover:bg-warning/10 ${isLoading ? 'is-loading' : ''}`}
                     aria-label={timerState.isRunning ? "Pausar cronômetro" : "Continuar cronômetro"}
+                    disabled={isLoading}
                   >
                     {timerState.isRunning ? (
                       <>
@@ -239,8 +252,9 @@ export function TaskCard({
                   <Button
                     onClick={() => onComplete(task.id)}
                     size="sm"
-                    className="btn-success text-success-foreground"
+                    className={`btn-success text-success-foreground ${isLoading ? 'is-loading' : ''}`}
                     aria-label={`Marcar tarefa ${task.title} como concluída`}
+                    disabled={isLoading}
                   >
                     <Square className="w-4 h-4 mr-1" aria-hidden="true" />
                     <span className="hidden sm:inline">Terminar</span>

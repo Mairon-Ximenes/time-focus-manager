@@ -19,4 +19,35 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Otimizações de build para performance
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production', // Remove console.logs apenas em produção
+        drop_debugger: true,
+        pure_funcs: ['console.log'], // Remove console.log especificamente
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separar dependências grandes em chunks separados para melhor caching
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-alert-dialog'],
+          router: ['react-router-dom'],
+          utils: ['date-fns', 'clsx', 'tailwind-merge'],
+        },
+      },
+    },
+    // Otimizar tamanho do chunk
+    chunkSizeWarningLimit: 1000,
+    // Comprimir assets
+    assetsInlineLimit: 4096,
+  },
+  // Otimizações de desenvolvimento
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+    exclude: ['@lovable/tagger'],
+  },
 }));
