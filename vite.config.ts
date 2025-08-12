@@ -21,14 +21,16 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     // Otimizações de build para performance
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production', // Remove console.logs apenas em produção
-        drop_debugger: true,
-        pure_funcs: ['console.log'], // Remove console.log especificamente
+    minify: mode === 'production' ? 'terser' : 'esbuild', // Usar terser só em produção
+    ...(mode === 'production' && {
+      terserOptions: {
+        compress: {
+          drop_console: true, // Remove console.logs apenas em produção
+          drop_debugger: true,
+          pure_funcs: ['console.log'], // Remove console.log especificamente
+        },
       },
-    },
+    }),
     rollupOptions: {
       output: {
         manualChunks: {
