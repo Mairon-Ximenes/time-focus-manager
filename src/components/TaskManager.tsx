@@ -212,48 +212,48 @@ export function TaskManager() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-7xl">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Header */}
-        <header className="mb-6 sm:mb-8" role="banner">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-            Time Focus Manager
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Gestão de Tarefas
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Organize suas tarefas, gerencie seu tempo e aumente sua produtividade com foco total
+          <p className="text-muted-foreground">
+            Organize seu tempo e aumente sua produtividade
           </p>
-        </header>
+        </div>
 
         {/* Stats Card - apenas para visualização diária */}
         {viewMode === 'day' && todayStats.total > 0 && (
-          <Card className="mb-4 sm:mb-6 bg-gradient-to-r from-primary/10 to-secondary/10" role="region" aria-label="Estatísticas do dia">
-            <CardContent className="pt-4 sm:pt-6">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-center">
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 p-2">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary" aria-hidden="true" />
+          <Card className="mb-6 bg-gradient-to-r from-primary/10 to-secondary/10">
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="flex items-center justify-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
                   <div>
-                    <div className="text-lg sm:text-2xl font-bold">{todayStats.total}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Total</div>
+                    <div className="text-2xl font-bold">{todayStats.total}</div>
+                    <div className="text-sm text-muted-foreground">Total</div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 p-2">
-                  <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-warning" aria-hidden="true" />
+                <div className="flex items-center justify-center gap-2">
+                  <AlertCircle className="w-5 h-5 text-warning" />
                   <div>
-                    <div className="text-lg sm:text-2xl font-bold">{todayStats.pending}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Pendentes</div>
+                    <div className="text-2xl font-bold">{todayStats.pending}</div>
+                    <div className="text-sm text-muted-foreground">Pendentes</div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 p-2">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-warning" aria-hidden="true" />
+                <div className="flex items-center justify-center gap-2">
+                  <Clock className="w-5 h-5 text-warning" />
                   <div>
-                    <div className="text-lg sm:text-2xl font-bold">{todayStats.active}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Ativa{todayStats.active !== 1 ? 's' : ''}</div>
+                    <div className="text-2xl font-bold">{todayStats.active}</div>
+                    <div className="text-sm text-muted-foreground">Ativa{todayStats.active !== 1 ? 's' : ''}</div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 p-2">
-                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-success" aria-hidden="true" />
+                <div className="flex items-center justify-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-success" />
                   <div>
-                    <div className="text-lg sm:text-2xl font-bold">{todayStats.completed}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Concluídas</div>
+                    <div className="text-2xl font-bold">{todayStats.completed}</div>
+                    <div className="text-sm text-muted-foreground">Concluídas</div>
                   </div>
                 </div>
               </div>
@@ -262,23 +262,23 @@ export function TaskManager() {
         )}
 
         {/* Controls */}
-        <nav className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4 mb-4 sm:mb-6" role="navigation" aria-label="Controles de visualização">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <ViewModeSelector
             currentMode={viewMode}
             onModeChange={setViewMode}
-            className="w-full lg:w-auto"
+            className="w-full md:w-auto"
           />
           <DateNavigation
             currentDate={selectedDate}
             viewMode={viewMode}
             onDateChange={setSelectedDate}
           />
-        </nav>
+        </div>
 
         {/* Main Content */}
-        <main id="main-content" className="animate-fade-in" role="main" aria-label="Lista de tarefas">
+        <div className="animate-fade-in">
           {renderCurrentView()}
-        </main>
+        </div>
       </div>
     </div>
   );

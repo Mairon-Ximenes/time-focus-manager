@@ -1,54 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { TimerState } from '@/types/task';
 
 export function useTimer(timerState: TimerState) {
   const [currentTime, setCurrentTime] = useState(Date.now());
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const lastUpdateRef = useRef<number>(Date.now());
 
   useEffect(() => {
-    if (!timerState.isRunning) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      return;
-    }
+    if (!timerState.isRunning) return;
 
-    // Função para atualizar o tempo com verificação de visibilidade
-    const updateTime = () => {
-      const now = Date.now();
-      // Se passou muito tempo desde a última atualização (usuário estava em outra aba)
-      if (now - lastUpdateRef.current > 2000) {
-        // Sincronizar com o tempo real
-        setCurrentTime(now);
-      } else {
-        setCurrentTime(now);
-      }
-      lastUpdateRef.current = now;
-    };
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
 
-    // Atualizar imediatamente
-    updateTime();
-
-    // Configurar interval
-    intervalRef.current = setInterval(updateTime, 1000);
-
-    // Listener para quando a página volta a ficar visível
-    const handleVisibilityChange = () => {
-      if (!document.hidden && timerState.isRunning) {
-        updateTime();
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
+    return () => clearInterval(interval);
   }, [timerState.isRunning]);
 
   // Calcular tempo atual da sessão
