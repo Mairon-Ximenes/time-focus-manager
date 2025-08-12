@@ -2,6 +2,9 @@
 
 ## Project info
 
+[Veja o site funcionando aqui](https://time-focus-manager.lovable.app/)
+
+
 **URL**: https://lovable.dev/projects/f8c8fe48-1573-4514-ba7d-18390143470b
 
 ## How can I edit this code?
