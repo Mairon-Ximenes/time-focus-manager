@@ -26,7 +26,7 @@ export function DateNavigation({ currentDate, viewMode, onDateChange }: DateNavi
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 sm:gap-4 w-full">
+    <div className="flex items-center gap-2 w-full">
       <Button
         onClick={handlePrevious}
         variant="outline"
