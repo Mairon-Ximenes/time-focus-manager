@@ -31,9 +31,9 @@ export function ViewModeSelector({
       value,
       label,
       icon: Icon
-    }) => <Button key={value} onClick={() => onModeChange(value)} variant={currentMode === value ? 'default' : 'ghost'} size="sm" className={cn('flex-1 text-xs sm:text-sm transition-all duration-200 min-w-0', currentMode === value && 'btn-primary text-primary-foreground shadow-sm')} role="tab" aria-selected={currentMode === value} aria-label={`Visualização por ${label.toLowerCase()}`}>
-          <Icon className="w-3 h-3 sm:w-4 sm:h-4 mr-1 shrink-0" aria-hidden="true" />
-          <span className="truncate text-xs sm:text-sm text-center">{label}</span>
+     }) => <Button key={value} onClick={() => onModeChange(value)} variant={currentMode === value ? 'default' : 'ghost'} size="sm" className={cn('flex-1 text-xs transition-all duration-200 min-w-16 px-2', currentMode === value && 'btn-primary text-primary-foreground shadow-sm')} role="tab" aria-selected={currentMode === value} aria-label={`Visualização por ${label.toLowerCase()}`}>
+          <Icon className="w-3 h-3 mr-1 shrink-0" aria-hidden="true" />
+          <span className="text-xs whitespace-nowrap">{label}</span>
         </Button>)}
     </div>;
 }
