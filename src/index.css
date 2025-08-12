@@ -346,7 +346,6 @@
     transform: scale(1.02);
   }
 }
-}
 
 @layer utilities {
   .transition-smooth {
