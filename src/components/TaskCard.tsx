@@ -18,17 +18,6 @@ import {
   Clock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 interface TaskCardProps {
   task: Task;
@@ -54,7 +43,6 @@ export function TaskCard({
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(task.description || '');
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { totalTime, formatTime } = useTimer(timerState);
 
   const isActive = task.id === timerState.activeTaskId;
@@ -83,8 +71,9 @@ export function TaskCard({
   };
 
   const handleDelete = () => {
-    onDelete(task.id);
-    setShowDeleteDialog(false);
+    if (window.confirm('Tem certeza que deseja deletar esta tarefa?')) {
+      onDelete(task.id);
+    }
   };
 
   const getCardClassName = () => {
@@ -151,8 +140,8 @@ export function TaskCard({
           {showTimer && (
             <div className={cn(
               'flex items-center gap-2 px-3 py-1 rounded-full text-sm font-mono timer-display',
-              isActive && 'bg-warning/80 text-warning-foreground',
-              isCompleted && 'bg-success/80 text-success-foreground',
+              isActive && 'bg-warning/50 text-warning-foreground',
+              isCompleted && 'bg-success/30 text-success-foreground',
               !isActive && !isCompleted && 'bg-muted'
             )}>
               <Clock className="w-4 h-4" />
@@ -249,35 +238,14 @@ export function TaskCard({
                   <Edit2 className="w-4 h-4" />
                 </Button>
               )}
-              <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-muted-foreground hover:text-destructive"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Tem certeza que deseja excluir a tarefa "{task.title}"? 
-                      Esta ação não pode ser desfeita.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction 
-                      onClick={handleDelete}
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
-                      Excluir
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Button
+                onClick={handleDelete}
+                size="sm"
+                variant="ghost"
+                className="text-muted-foreground hover:text-destructive"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
             </div>
           )}
         </div>
